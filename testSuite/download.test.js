@@ -51,30 +51,30 @@ module.exports = function(describe, it, before, after, beforeEach, afterEach) {
         // See the Security Considerations section above.
         // const client = new BulkDataClient()
 
-        it.skip ({
-            id  : "Download-01",
-            name: "Requires valid access token if the requiresAccessToken field in the status body is true",
-            description: "If the `requiresAccessToken` field in the Complete Status body is " +
-                "set to true, the request MUST include a valid access token."
-        }, async (cfg, api) => {
+        // it ({
+        //     id  : "Download-01",
+        //     name: "Requires valid access token if the requiresAccessToken field in the status body is true",
+        //     description: "If the `requiresAccessToken` field in the Complete Status body is " +
+        //         "set to true, the request MUST include a valid access token."
+        // }, async (cfg, api) => {
 
-            // Create a client to download the fastest resource.
-            const client = createClient(cfg, api);
-            if (client) {
-                const { body } = await client.getExportResponse();
-                if (body.requiresAccessToken) {
-                    const response = await client.downloadFileAt(0, true);
-                    expect(response.statusCode).to.be.above(399);
-                } else {
-                    api.decorateHTML(
-                        "NOTE",
-                        "<div><b>NOTE: </b> This test was not executed because the " +
-                        "<code>requiresAccessToken</code> field in the complete status " +
-                        "body was <b>not</b> set to <code>true</code>.</div>"
-                    );
-                }
-            }
-        });
+        //     // Create a client to download the fastest resource.
+        //     const client = createClient(cfg, api);
+        //     if (client) {
+        //         const { body } = await client.getExportResponse();
+        //         if (body.requiresAccessToken) {
+        //             const response = await client.downloadFileAt(0, true);
+        //             expect(response.statusCode).to.be.above(399);
+        //         } else {
+        //             api.decorateHTML(
+        //                 "NOTE",
+        //                 "<div><b>NOTE: </b> This test was not executed because the " +
+        //                 "<code>requiresAccessToken</code> field in the complete status " +
+        //                 "body was <b>not</b> set to <code>true</code>.</div>"
+        //             );
+        //         }
+        //     }
+        // });
 
         it ({
             id  : "Download-02",
@@ -143,55 +143,55 @@ module.exports = function(describe, it, before, after, beforeEach, afterEach) {
             }
         });
 
-        it.skip ({
-            id  : "Download-05",
-            name: "Rejects a download if the client scopes do not cover that resource type",
-            description: "If the download endpoint requires authorization, it should also " +
-                "verify that the client has been granted access to the resource type that it " +
-                "attempts to download. This test makes an export and then it re-authorizes before " +
-                "downloading the first file, so that the download request is made with a token " +
-                "that does not provide access to the downloaded resource."
-        }, async (cfg, api) => {
+    //     it ({
+    //         id  : "Download-05",
+    //         name: "Rejects a download if the client scopes do not cover that resource type",
+    //         description: "If the download endpoint requires authorization, it should also " +
+    //             "verify that the client has been granted access to the resource type that it " +
+    //             "attempts to download. This test makes an export and then it re-authorizes before " +
+    //             "downloading the first file, so that the download request is made with a token " +
+    //             "that does not provide access to the downloaded resource."
+    //     }, async (cfg, api) => {
 
-            if (cfg.authType == "client-credentials") {
-                return api.setNotSupported(
-                    `This test is not not applicable for servers using client-credentials authentication`
-                );
-            }
+    //         if (cfg.authType == "client-credentials") {
+    //             return api.setNotSupported(
+    //                 `This test is not not applicable for servers using client-credentials authentication`
+    //             );
+    //         }
 
-            // Create a client to download the fastest resource.
-            let pathName = cfg.systemExportEndpoint || cfg.patientExportEndpoint || cfg.groupExportEndpoint;
+    //         // Create a client to download the fastest resource.
+    //         let pathName = cfg.systemExportEndpoint || cfg.patientExportEndpoint || cfg.groupExportEndpoint;
 
-            if (!pathName) {
-                return api.setNotSupported(`No export endpoints configured`);
-            }
+    //         if (!pathName) {
+    //             return api.setNotSupported(`No export endpoints configured`);
+    //         }
 
-            const client = new BulkDataClient(cfg, api, `${cfg.baseURL}${pathName}?_type=Patient`);
+    //         const client = new BulkDataClient(cfg, api, `${cfg.baseURL}${pathName}?_type=Patient`);
 
-            // Do an export using the full access scopes
-            const resp = await client.getExportResponse();
+    //         // Do an export using the full access scopes
+    //         const resp = await client.getExportResponse();
 
-            if (!client.statusResponse.body.requiresAccessToken) {
-                return api.decorateHTML(
-                    "NOTE",
-                    "<div>This test was not executed because the <code>requiresAccessToken</code> field in the complete status body was NOT set to <code>true</code>.</div>"
-                );
-            }
+    //         if (!client.statusResponse.body.requiresAccessToken) {
+    //             return api.decorateHTML(
+    //                 "NOTE",
+    //                 "<div>This test was not executed because the <code>requiresAccessToken</code> field in the complete status body was NOT set to <code>true</code>.</div>"
+    //             );
+    //         }
 
-            // Once the export is done and before the actual download,
-            // re-authorize with less scopes so that we can test if the
-            // download endpoint evaluates scopes
-            await client.getAccessToken({
-                force        : true,
-                scope        : "system/Observation.read",
-                requestLabel : "Authorization Request 2",
-                responseLabel: "Authorization Response 2"
-            });
+    //         // Once the export is done and before the actual download,
+    //         // re-authorize with less scopes so that we can test if the
+    //         // download endpoint evaluates scopes
+    //         await client.getAccessToken({
+    //             force        : true,
+    //             scope        : "system/Observation.read",
+    //             requestLabel : "Authorization Request 2",
+    //             responseLabel: "Authorization Response 2"
+    //         });
 
-            const resp2 = await client.downloadFile(resp.body.output[0].url);
+    //         const resp2 = await client.downloadFile(resp.body.output[0].url);
 
-            expect(resp2.statusCode, "Download should fail if the client does not have proper scopes").to.be.above(399);
-        });
-    });
+    //         expect(resp2.statusCode, "Download should fail if the client does not have proper scopes").to.be.above(399);
+    //     });
+    // });
 
 };
