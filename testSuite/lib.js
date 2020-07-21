@@ -284,7 +284,7 @@ class BulkDataClient
                 ...requestOptions.headers,
                 authorization: "Bearer " + accessToken
             };
-        }
+        // }
 
         stripObjectValues(requestOptions, undefined, true);
         return customRequest(requestOptions);
