@@ -41,4 +41,6 @@ module.exports = {
     // server.
     fastestResource: "Patient",
 
+    authType:"client-credentials"
+
 };
