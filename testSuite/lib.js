@@ -278,8 +278,7 @@ class BulkDataClient
         };
 
         // we always set an Authentication token for BCDA
-    //    if (this.options.requiresAuth) {
-       if (skipAuth) {
+        //  if (this.options.requiresAuth) {
             const accessToken = await this.getAccessToken();
             requestOptions.headers = {
                 ...requestOptions.headers,
