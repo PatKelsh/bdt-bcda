@@ -192,6 +192,6 @@ module.exports = function(describe, it, before, after, beforeEach, afterEach) {
 
     //         expect(resp2.statusCode, "Download should fail if the client does not have proper scopes").to.be.above(399);
     //     });
-    // });
+    });
 
 };
