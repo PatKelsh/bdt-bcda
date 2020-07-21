@@ -51,7 +51,7 @@ module.exports = function(describe, it, before, after, beforeEach, afterEach) {
         // See the Security Considerations section above.
         // const client = new BulkDataClient()
 
-        it.skip ({
+        xit ({
             id  : "Download-01",
             name: "Requires valid access token if the requiresAccessToken field in the status body is true",
             description: "If the `requiresAccessToken` field in the Complete Status body is " +
@@ -143,7 +143,7 @@ module.exports = function(describe, it, before, after, beforeEach, afterEach) {
             }
         });
 
-        it.skip ({
+        xit ({
             id  : "Download-05",
             name: "Rejects a download if the client scopes do not cover that resource type",
             description: "If the download endpoint requires authorization, it should also " +
